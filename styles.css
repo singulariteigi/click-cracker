@@ -1,35 +1,32 @@
 body {
-    background-color: black;
-    color: green;
-    font-family: 'Courier New', Courier, monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-#game-container {
+    font-family: Arial, sans-serif;
     text-align: center;
+    background-color: #f0f0f0;
 }
 
-#points {
-    font-size: 2em;
-    margin-bottom: 20px;
+#title-screen, #character-selection, #game-screen, #result-screen {
+    display: none;
+    margin-top: 50px;
+}
+
+.character {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.character img {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #000;
 }
 
 #click-button {
-    display: block;
-    margin: 10px auto;
+    font-size: 20px;
     padding: 10px 20px;
-    font-size: 1.5em;
-    cursor: pointer;
 }
 
-.upgrade-button {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 20px;
-    font-size: 1.2em;
-    cursor: pointer;
+#score {
+    margin-top: 20px;
+    font-size: 24px;
 }
