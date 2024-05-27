@@ -1,35 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Cracker</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div id="title-screen">
+        <img id="logo" src="images/logo.jpg" alt="Logo"> <!-- ロゴ画像を追加 -->
+        <input type="text" id="player-name" placeholder="Enter your name">
         <button id="start-button">Start Game</button>
+        <button id="vs-mode-button">VS Mode</button> <!-- VS Modeボタンを追加 -->
+        <button id="ranking-button">Ranking</button> <!-- Rankingボタンを追加 -->
+    </div>
+
+    <div id="game">
+    <div id="selectYourCharacter" style="display: none;">
+        <h2 class="syc">Select Your Character!</h2>
     </div>
     <div id="character-selection" style="display: none;">
-        <div class="character" data-character="char1" style="border: 2px solid #000;">Character 1</div>
-        <div class="character" data-character="char2" style="border: 2px solid #000;">Character 2</div>
-        <div class="character" data-character="char3" style="border: 2px solid #000;">Character 3</div>
+        <div class="character" data-character="char1">
+            <img src="images/char1.jpg" alt="Character 1">
+            <p class="character-name">柊 ナツキ</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char2">
+            <img src="images/char2.jpg" alt="Character 2">
+            <p class="character-name">板野 アラシ</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char3">
+            <img src="images/char3.jpg" alt="Character 3">
+            <p class="character-name">カゲブンシン</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char4">
+            <img src="images/char4.jpg" alt="Character 4">
+            <p class="character-name">堀井 シオン</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char5">
+            <img src="images/char5.jpg" alt="Character 5">
+            <p class="character-name">高木 ケンジ</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char6">
+            <img src="images/char6.jpg" alt="Character 6">
+            <p class="character-name">リッチー・ゴールド</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char7">
+            <img src="images/char7.jpg" alt="Character 7">
+            <p class="character-name">サラ・D・レッシング</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char8">
+            <img src="images/char8.jpg" alt="Character 8">
+            <p class="character-name">クッキー焼きの<br>マーガレット</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
+        <div class="character" data-character="char9" style="display: none">
+            <img src="images/char9.jpg" alt="Character 9">
+            <p class="character-name">Dexter Mix</p>
+            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+        </div>
         <button id="ready-button" style="display: none;">Ready?</button>
     </div>
+
     <div id="game-screen" style="display: none;">
-        <div id="countdown"></div>
-        <button id="click-button" style="display: none;">Click!</button>
-        <button id="multiply-button" style="display: none;">Multiply</button>
-        <button id="trade-button" style="display: none;">Trade</button>
-        <button id="skill-button" style="display: none;">Skill</button>
-        <div id="score" style="display: none;">Score: 0</div>
+        <h2 id="countdown"></h2>
+        <img id="character-image" src="" alt="Character Image">
+        <h2 id="score" style="display: none;">Score: 0</h2>
+        <button id="click-button" style="display: none;">Click Me!</button>
+        <button id="multiply-button" style="display: none;">Multiply<br>-10 CP</button>
+        <button id="trade-button" style="display: none;">Trade<br>-50 +100</button>
+        <button id="skill-button" style="display: none;">Skill<br>-100 CP</button>
     </div>
+
     <div id="result-screen" style="display: none;">
+        <h2 class="fin">Finish!</h2>
         <canvas id="result-chart"></canvas>
+        <h2 id="final-cp" style="display: none;"></h2>
         <button id="restart-button">Restart</button>
         <button id="back-to-title-button">Back to Title</button>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    </div>
+
+    <!-- 対戦モード用のセクション -->
+    <div id="versus-mode" style="display: none;">
+        <!-- 対戦モード用のHTML -->
+    </div>
+    
+    <!-- ランキング表示用のセクション -->
+    <div id="ranking" style="display: none;">
+        <!-- ランキング表示用のHTML -->
+    </div>
+
+    <script type="module" src="js/common.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/singlePlayer.js"></script>
+    <script type="module" src="js/multiPlayer.js"></script>
+    <script type="module" src="js/ranking.js"></script>
 </body>
 </html>

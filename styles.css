@@ -1,32 +1,187 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f0f0f0;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#title-screen, #character-selection, #game-screen, #result-screen {
-    display: none;
-    margin-top: 50px;
+h1 {
+    color: #333;
+    font-size: 3em; /* 文字サイズを大きく */
+}
+
+h2 {
+    color: #333;
+}
+
+button {
+    display: block;
+    margin: 10px auto;
+    padding: 20px 40px;
+    font-size: 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#selectYourCharacter{
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+#character-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .character {
-    display: inline-block;
+    flex: 0 0 calc(33.33% - 20px);
     margin: 10px;
-    cursor: pointer;
 }
 
 .character img {
-    width: 100px;
-    height: 100px;
-    border: 2px solid #000;
+    width: 500px;
+    height: 500px;
 }
 
-#click-button {
-    font-size: 20px;
-    padding: 10px 20px;
+#selectYourCharacter {
+    margin-top: 20px; /* 適切な間隔を調整 */
 }
 
-#score {
+
+.character-name {
+    font-size: 50px; /* フォントサイズを倍に */
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.character-skill {
+    font-size: 20px; /* スキルの説明文のフォントサイズ */
+    margin-top: 5px;
+}
+
+/* グラフの設定 */
+#result-chart {
+    max-width: 90%;
+    height: 80vh; /* 高さを画面の80%に設定 */
+    margin: 20px auto;
+    color: #ffffff; /* テキストの色をホワイトに */
+}
+
+#final-cp {
+    font-size: 68px;
+    font-weight: bold;
     margin-top: 20px;
-    font-size: 24px;
+    color: #ffffff; /* テキストの色をホワイトに */
+}
+
+
+#game-screen button {
+    width: 80%;
+    max-width: 1000px;
+}
+
+#multiply-button {
+    background-color: #28a745;
+}
+
+#multiply-button:hover {
+    background-color: #218838;
+}
+
+#trade-button {
+    background-color: #ffc107;
+}
+
+#trade-button:hover {
+    background-color: #e0a800;
+}
+
+#skill-button {
+    background-color: #dc3545;
+}
+
+#skill-button:hover {
+    background-color: #c82333;
+}
+
+/* カウントダウンのスタイル */
+#countdown {
+    font-size: 200px; /* フォントサイズを大きく */
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to bottom, rgb(238, 71, 71), rgb(185, 63, 210),rgb(238, 71, 71));
+
+
+    min-height: 100vh;
+    overflow-x: hidden; /* 横スクロールを防止 */
+}
+
+#logo {
+    width: 800px; /* ロゴの幅を設定 */
+    height: auto; /* 高さは自動 */
+    display: block; /* ブロック要素に */
+    margin: 0 auto; /* 中央寄せ */
+}
+
+#title-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#character-image {
+    width: 500px;  /* 画像の幅を500ピクセルに設定 */
+    height: auto;  /* 高さは自動（元のアスペクト比を保つ） */
+    margin-top: 20px;
+}
+
+.syc{
+    color: #ffffff;
+}
+
+.fin{
+    color: #ffffff;
+    font-size: 80px;
+}
+
+#score{
+    font-size: 100px;
+}
+
+/* 対戦モード用のスタイル */
+#versus-mode {
+    /* 対戦モード用のスタイル */
+}
+
+/* ランキング表示用のスタイル */
+#ranking {
+    /* ランキング表示用のスタイル */
 }
