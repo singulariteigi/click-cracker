@@ -9,11 +9,11 @@
 </head>
 <body>
     <div id="title-screen">
-        <img id="logo" src="images/logo.jpg" alt="Logo"> <!-- ロゴ画像を追加 -->
+        <img id="logo" src="images/logo.jpg" alt="Logo">
         <input type="text" id="player-name" placeholder="Enter your name">
-        <button id="start-button">Start Game</button>
-        <button id="vs-mode-button">VS Mode</button> <!-- VS Modeボタンを追加 -->
-        <button id="ranking-button">Ranking</button> <!-- Rankingボタンを追加 -->
+        <button id="start-button" disabled>Start Game</button>
+        <button id="vs-mode-button">VS Mode</button>
+        <button id="ranking-button">Ranking</button>
     </div>
 
     <div id="game">
@@ -98,10 +98,8 @@
         <!-- ランキング表示用のHTML -->
     </div>
 
-    <script type="module" src="js/common.js"></script>
-    <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/singlePlayer.js"></script>
-    <script type="module" src="js/multiPlayer.js"></script>
-    <script type="module" src="js/ranking.js"></script>
+
+    <script src="main.js"></script>
+
 </body>
 </html>

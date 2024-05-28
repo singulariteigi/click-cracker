@@ -1,9 +1,7 @@
-// singlePlayer.js
-
-import { characters } from './common.js';
-
 document.addEventListener('DOMContentLoaded', () => {
+    const playerNameInput = document.getElementById('player-name');
     const startButton = document.getElementById('start-button');
+    const vsModeButton = document.getElementById('vs-mode-button');
     const characterSelection = document.getElementById('character-selection');
     const readyButton = document.getElementById('ready-button');
     const gameScreen = document.getElementById('game-screen');
@@ -31,12 +29,37 @@ document.addEventListener('DOMContentLoaded', () => {
     let chart = null;
     let selectedCharacterImage = null;
 
+    // プレイヤー名の入力チェック
+    playerNameInput.addEventListener('input', () => {
+        if (playerNameInput.value.trim() !== '') {
+            startButton.disabled = false;
+        } else {
+            startButton.disabled = true;
+        }
+    });
+
     startButton.addEventListener('click', () => {
+        if (playerNameInput.value.trim() === '') {
+            alert('Please enter your name.');
+            return;
+        }
+
         document.getElementById('title-screen').style.display = 'none';
-        selectYourCharacter.style.display = 'block';
+        document.getElementById('selectYourCharacter').style.display = 'block';
         characterSelection.style.display = 'flex';
     });
-    
+
+    vsModeButton.addEventListener('click', () => {
+        if (playerNameInput.value.trim() === '') {
+            alert('Please enter your name.');
+            return;
+        }
+
+        document.getElementById('title-screen').style.display = 'none';
+        document.getElementById('selectYourCharacter').style.display = 'block';
+        characterSelection.style.display = 'flex';
+    });
+
     characters.forEach(character => {
         character.addEventListener('click', () => {
             characters.forEach(c => c.style.border = '2px solid #000');
@@ -48,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     readyButton.addEventListener('click', () => {
-        selectYourCharacter.style.display = 'none';
+        document.getElementById('selectYourCharacter').style.display = 'none';
         characterSelection.style.display = 'none';
         gameScreen.style.display = 'block';
         document.getElementById('character-image').src = selectedCharacterImage;
@@ -91,6 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         multiplyButton.addEventListener('click', multiplyScore);
         tradeButton.addEventListener('click', tradeScore);
         skillButton.addEventListener('click', useSkill);
+
+           
     }
 
     function incrementScore() {
@@ -134,7 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.textContent = `Score: ${score}`;
     }
 
+
     function endGame() {
+    
+        // 以下のコードは変更なし
         clickButton.style.display = 'none';
         multiplyButton.style.display = 'none';
         tradeButton.style.display = 'none';
@@ -142,12 +170,21 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.style.display = 'none';
         clearInterval(gameInterval);
         clearInterval(recordInterval);
-
+    
+        // イベントリスナーの削除
+        clickButton.removeEventListener('click', incrementScore);
+        multiplyButton.removeEventListener('click', multiplyScore);
+        tradeButton.removeEventListener('click', tradeScore);
+        skillButton.removeEventListener('click', useSkill);
+    
         recordCpHistory(true, 20);
-
+    
         resultScreen.style.display = 'block';
         drawChart();
+
+
     }
+    
 
     let startTime;
 
@@ -269,3 +306,38 @@ document.addEventListener('DOMContentLoaded', () => {
         startTime = null;
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const logo = document.getElementById('logo');
+    let clickCount = 0;
+
+    logo.addEventListener('click', function() {
+        clickCount += 1;
+        console.log('Click count:', clickCount); // ログを追加
+        if (clickCount >= 10) {
+            var char9 = document.querySelector('.character[data-character="char9"]');
+            console.log('Character 9:', char9); // ログを追加
+            char9.style.display = 'block';
+        }
+    });
+});
+
+const SHEET_ID = '19m6f_Kc2TMSg8gGTo8iAZd2wUJKtyqgd6IaqPRJINwQ'; // ここにスプレッドシートのIDを入力します
+function addGameData(playerName, score, character) {
+    const apiKey = process.env.REACT_APP_API_KEY; // GitHub Actionsで設定したAPIキーを環境変数から取得します
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A1:D1:append?valueInputOption=USER_ENTERED&key=${apiKey}`;
+    const data = {
+      values: [[new Date(), playerName, score, character]]
+    };
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
+  }
