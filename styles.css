@@ -61,11 +61,12 @@ button:hover {
     font-size: 50px; /* フォントサイズを倍に */
     font-weight: bold;
     color: #ffffff;
+    margin-bottom: -10px;
 }
 
 .character-skill {
     font-size: 20px; /* スキルの説明文のフォントサイズ */
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 /* グラフの設定 */
@@ -89,39 +90,17 @@ button:hover {
     max-width: 1000px;
 }
 
-#multiply-button {
-    background-color: #28a745;
-}
-
-#multiply-button:hover {
-    background-color: #218838;
-}
-
-#trade-button {
-    background-color: #ffc107;
-}
-
-#trade-button:hover {
-    background-color: #e0a800;
-}
-
-#skill-button {
-    background-color: #dc3545;
-}
-
-#skill-button:hover {
-    background-color: #c82333;
-}
-
 /* カウントダウンのスタイル */
 #countdown {
-    font-size: 200px; /* フォントサイズを大きく */
+    font-size: 400px; /* フォントサイズを大きく */
     position: absolute;
-    top: 10%;
+    top: 250px;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #ffffff;
+    text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 234, 41, 1), 0 0 30px rgb(174, 0, 255); /* テキストシャドウを追加 */ /* テキストシャドウを追加 */
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -176,12 +155,232 @@ body {
     font-size: 100px;
 }
 
-/* 対戦モード用のスタイル */
-#versus-mode {
-    /* 対戦モード用のスタイル */
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(255, 204, 255); /* ピンク色 */
+    padding: 20px;
+    border-radius: 10px; /* 角丸 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* 影 */
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* フォント */
+    font-weight: bold; /* 太字 */
+    color: rgb(102, 0, 102); /* テキストカラーを紫色に変更 */
 }
 
-/* ランキング表示用のスタイル */
-#ranking {
-    /* ランキング表示用のスタイル */
+
+#player-name {
+    font-size: 20px; /* フォントサイズを20pxに設定 */
+    padding: 20px; /* 上下左右の余白を10pxに設定 */
+    width: 300px; /* 幅を300pxに設定 */
+    margin-top: 20px;
+}
+
+.character-skill {
+    font-size: 40px; /* 文字の大きさを変更 */
+    font-weight: bold; /* 太字にする */
+    color: rgb(0, 0, 0); /* テキストの色を変更 */
+    line-height: 1; /* 行間を詰める */
+    padding: 1rem 2rem;
+    border-top: 6px double #fc4242;
+    background: #ffe16758;
+    
+}
+
+
+.character-skill span {
+    font-weight: normal; /* スパン内のテキストを太字解除 */
+    color: #ffffff; /* スパン内のテキストの色を変更 */
+    font-size: 35px;
+}
+
+.result-screen2{
+    margin-bottom: 20px;
+
+}
+
+
+/* 吹き出し本体 */
+#character-dialogue {
+    position: relative;
+    padding: 0.25em 1em;
+    color: #000000;
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    width: 500px; /* 幅を500ピクセルに設定 */
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 1%;
+    margin-left:  auto; /* 吹き出し全体を中央に配置 */
+    margin-right:  auto;
+}
+
+#character-dialogue::after {
+    position: absolute;
+    top: -9px; /* 吹き出しの上に配置 */
+    left: 20px; /* 三角形を左にずらす */
+    width: 0;
+    height: 0;
+    content: '';
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent rgb(255, 255, 255) transparent; /* 三角形の色を設定 */
+}
+
+/* 親要素にフレックスボックスを適用 */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 中央揃え */
+    gap: 5px; /* ボタン間のスペース */
+    margin-top: 20px; /* 必要に応じて調整 */
+}
+
+/* ボタンのスタイル */
+.title-button {
+    background: linear-gradient(to bottom, #ff6f61, #ff4c4c); /* 明るい赤から濃い赤へのグラデーション */
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 60px;
+    font-weight: bold;
+    padding: 15px 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    text-decoration: none;
+    width: 400px; /* ボタンの幅を固定 */
+}
+
+.title-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+.title-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#ready-button {
+    background: linear-gradient(to bottom, #1abc9c, #16a085); /* 明るい緑から濃い緑へのグラデーション */
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 15px 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+#ready-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+#ready-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ボタンのスタイル */
+button {
+    /* 他のスタイル */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    transition: transform 0.3s, box-shadow 0.3s; /* ホバー時にも影の変化をアニメーション化 */
+}
+
+#multiply-button {
+    background-color: #ff9500; /* オレンジを少し濃く */
+    border-color: #ff9500;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 35px;
+}
+
+#trade-button {
+    background-color: #4cd964; /* ミントグリーンを少し濃く */
+    border-color: #4cd964;
+    margin: 10px;
+    font-size: 35px;
+}
+
+#skill-button {
+    background-color: #ff3b30; /* ピンクを少し濃く */
+    font-size: 35px;
+    margin: 10px;
+    border-color: #ff3b30;
+}
+
+#click-button {
+    background-color: #5ac8fa; /* ライトブルーを少し濃く */
+    font-size: 35px;
+    border-color: #5ac8fa;
+}
+
+button:hover {
+    /* 他のホバースタイル */
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.2); /* 光彩を追加 */
+}
+
+#multiply-button:hover {
+    background-color: #ff7300; /* ホバー時の背景色をダークオレンジに変更 */
+}
+
+#trade-button:hover {
+    background-color: #34bfa3; /* ホバー時の背景色をミディアムアクアマリンに変更 */
+}
+
+#skill-button:hover {
+    background-color: #ff375f; /* ホバー時の背景色をミディアムピンクに変更 */
+}
+
+#click-button:hover {
+    background-color: #4ea8de; /* ホバー時の背景色をスカイブルーに変更 */
+}
+
+
+#tweet-button,
+#back-to-title-button {
+    background: linear-gradient(to bottom, #5392ff, #1f71ff); /* 明るい赤から濃い赤へのグラデーション */
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 60px;
+    font-weight: bold;
+    padding: 15px 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    text-decoration: none;
+    width: 400px; /* ボタンの幅を固定 */
+}
+
+#tweet-button:hover,
+#back-to-title-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+}
+
+#tweet-button:active,
+#back-to-title-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#Win{
+    font-size: 100px;
+    color: darkturquoise;
 }

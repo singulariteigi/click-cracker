@@ -10,10 +10,22 @@
 <body>
     <div id="title-screen">
         <img id="logo" src="images/logo.jpg" alt="Logo">
-        <input type="text" id="player-name" placeholder="Enter your name">
-        <button id="start-button" disabled>Start Game</button>
-        <button id="vs-mode-button">VS Mode</button>
-        <button id="ranking-button">Ranking</button>
+        <input type="text" id="player-name" placeholder="Enter your name!">
+        <div class="button-container">
+            <button class="title-button" id="start-button">Single Mode</button>
+            <button class="title-button" id="vs-mode-button">VS Mode</button>
+            <button class="title-button" id="ranking-button">Ranking</button>
+        </div>
+        
+        
+        <div id="popup" class="popup">準備中です(^▽^)!</div>
+    </div>
+
+    <div id="result-screen" style="display: none;">
+        <h2 class="fin">Finish!</h2>
+        <canvas id="result-chart"></canvas>
+        <h2 id="final-cp" style="display: none;"></h2>
+        <h2 id="Win" style="display: none;">You Win!</h2>
     </div>
 
     <div id="game">
@@ -23,49 +35,50 @@
     <div id="character-selection" style="display: none;">
         <div class="character" data-character="char1">
             <img src="images/char1.jpg" alt="Character 1">
-            <p class="character-name">柊 ナツキ</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">サクラ</p>
+            <p class="character-skill">【編纂者】<br><span>他のボタンの数字を適当に変えちゃうぞ!</span></p>
         </div>
         <div class="character" data-character="char2">
             <img src="images/char2.jpg" alt="Character 2">
-            <p class="character-name">板野 アラシ</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">嵐野 レイジ</p>
+            <p class="character-skill">【反逆者】<br><span>他のボタンの数字をマジで適当に変えちゃうぞ!</span></p>
         </div>
         <div class="character" data-character="char3">
             <img src="images/char3.jpg" alt="Character 3">
-            <p class="character-name">カゲブンシン</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">クローンジュツ</p>
+            <p class="character-skill">【忍者】<br><span>5秒間CVが400倍になるぞ!（1度きり）</span></p>
         </div>
         <div class="character" data-character="char4">
             <img src="images/char4.jpg" alt="Character 4">
-            <p class="character-name">堀井 シオン</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">堀井 バスター</p>
+            <p class="character-skill">【狂信者】<br><span>2秒間CVが1000倍になるぞ!（1度きり）</span></p>
         </div>
         <div class="character" data-character="char5">
             <img src="images/char5.jpg" alt="Character 5">
-            <p class="character-name">高木 ケンジ</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">石内 涼子</p>
+            <p class="character-skill">【曲者】<br><span>CPが0倍か7倍にするぞ!</span></p>
         </div>
         <div class="character" data-character="char6">
             <img src="images/char6.jpg" alt="Character 6">
-            <p class="character-name">リッチー・ゴールド</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">リッチー・クライアント</p>
+            <p class="character-skill">【高所得者】<br><span>はじめから1000CPもらえるぞ!</span></p>
         </div>
         <div class="character" data-character="char7">
             <img src="images/char7.jpg" alt="Character 7">
-            <p class="character-name">サラ・D・レッシング</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">サラ・D・ブランチ</p>
+            <p class="character-skill">【隠者】<br><span>CPを10倍にしちゃうぞ!（1度きり）</span></p>
         </div>
         <div class="character" data-character="char8">
             <img src="images/char8.jpg" alt="Character 8">
-            <p class="character-name">クッキー焼きの<br>マーガレット</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">クッキー焼きのコミット</p>
+            <p class="character-skill">【高齢者】<br><span>10秒間何もしなくてもCPが増えるぞ!</span></p>
         </div>
         <div class="character" data-character="char9" style="display: none">
             <img src="images/char9.jpg" alt="Character 9">
-            <p class="character-name">Dexter Mix</p>
-            <p class="character-skill">Skill<br>スキルの詳細な説明文が入ります</p>
+            <p class="character-name">Dexter Marge</p>
+            <p class="character-skill">【絶対者】<br><span>勝つぞ！</span></p>
         </div>
+        
         <button id="ready-button" style="display: none;">Ready?</button>
     </div>
 
@@ -73,32 +86,27 @@
         <h2 id="countdown"></h2>
         <img id="character-image" src="" alt="Character Image">
         <h2 id="score" style="display: none;">Score: 0</h2>
-        <button id="click-button" style="display: none;">Click Me!</button>
-        <button id="multiply-button" style="display: none;">Multiply<br>-10 CP</button>
-        <button id="trade-button" style="display: none;">Trade<br>-50 +100</button>
-        <button id="skill-button" style="display: none;">Skill<br>-100 CP</button>
+        <button id="click-button" style="display: none;">Click Me!<span id="click-value"></span></button>
+        <button id="multiply-button" style="display: none;">Multiply<br>-10CP CV×2</button>
+        <button id="trade-button" style="display: none;">Trade<br>-50CP +100CP</button>
+        <button id="skill-button" style="display: none;">Skill<br>-100CP</button>
     </div>
-
-    <div id="result-screen" style="display: none;">
-        <h2 class="fin">Finish!</h2>
-        <canvas id="result-chart"></canvas>
-        <h2 id="final-cp" style="display: none;"></h2>
-        <button id="restart-button">Restart</button>
+    
+    <div id="result-screen2" style="display: none;">
+        <!-- セリフ表示用の要素 -->
+            <p id="character-dialogue"></p>
+        
+        <h2 id="Win" style="display: none;">You Win!</h2>
+        <button id="tweet-button">結果をシェアする！</button>
+        <p id="message" style="display: none;">すごいクリック回数どすなぁ、ギネス申請したほうがええどすえ</p>
         <button id="back-to-title-button">Back to Title</button>
     </div>
+
+
     </div>
 
     <!-- 対戦モード用のセクション -->
-    <div id="versus-mode" style="display: none;">
-        <!-- 対戦モード用のHTML -->
-    </div>
     
-    <!-- ランキング表示用のセクション -->
-    <div id="ranking" style="display: none;">
-        <!-- ランキング表示用のHTML -->
-    </div>
-
-
     <script src="main.js"></script>
 
 </body>

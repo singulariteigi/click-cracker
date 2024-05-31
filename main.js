@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickButton = document.getElementById('click-button');
     const scoreDisplay = document.getElementById('score');
     const resultScreen = document.getElementById('result-screen');
+    const resultScreen2 = document.getElementById('result-screen2');
     const restartButton = document.getElementById('restart-button');
     const backToTitleButton = document.getElementById('back-to-title-button');
     const multiplyButton = document.getElementById('multiply-button');
@@ -16,6 +17,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const skillButton = document.getElementById('skill-button');
     const finalCpDisplay = document.getElementById('final-cp');
     const characters = document.querySelectorAll('.character');
+    const clickValueDisplay = document.getElementById('click-value');
+    const rankingButton = document.getElementById('ranking-button');
+    const popup = document.getElementById('popup');
+
+
+    // クリック回数を格納する変数
+        let clickCount = 0;
+        let multiplyCount = 0;
+        let tradeCount = 0;
+        let skillCount = 0;
+    
+
+
+    // クリックボタンがクリックされたときの処理
+    clickButton.addEventListener('click', function() {
+        // クリック回数を1増やす
+        clickCount++;
+        checkCount();
+    });
+
+    // Multiplyボタンがクリックされたときの処理
+    multiplyButton.addEventListener('click', function() {
+        // Multiply回数を1増やす
+        multiplyCount++;
+        checkCount();
+    });
+
+    // Tradeボタンがクリックされたときの処理
+    tradeButton.addEventListener('click', function() {
+        // Trade回数を1増やす
+        tradeCount++;
+        checkCount();
+    });
+
+    // Skillボタンがクリックされたときの処理
+    skillButton.addEventListener('click', function() {
+        // Skill回数を1増やす
+        skillCount++;
+        checkCount();
+    });
+
+    // クリック回数をチェックして、条件を満たした場合にツイートボタンを表示するかどうかを判断する関数
+    function checkCount() {
+        const totalCount = clickCount + multiplyCount + tradeCount + skillCount;
+        if (totalCount >= 2000) {
+            // ツイートボタンを非表示にする
+            document.getElementById('tweet-button').style.display = 'none';
+            // メッセージを表示する
+            document.getElementById('message').style.display = 'block';
+        }
+    }
+
+    tradeButton.dataset.cost = '-50';
+    tradeButton.dataset.gain = '100';
 
     let selectedCharacter = null;
     let score = 0;
@@ -28,6 +83,172 @@ document.addEventListener('DOMContentLoaded', () => {
     const cpHistory = [];
     let chart = null;
     let selectedCharacterImage = null;
+    let selectedCharacterSkill = null;
+    let skillUsed = false; // 一度きりのスキル用フラグ
+    let logoClickcount = 0;
+
+    document.getElementById('logo').addEventListener('click', () => {
+        // ロゴがクリックされたときにクリック回数を増やします
+        logoClickcount++;
+    
+        // ロゴが10回クリックされた場合、キャラクター選択画面を表示します
+        if (logoClickcount >= 10) {
+              // 隠しキャラクターの要素を表示します
+            document.querySelector('.character[data-character="char9"]').style.display = 'block';
+        }
+    });
+
+    vsModeButton.addEventListener('click', () => {
+        showPopup();
+    });
+
+    rankingButton.addEventListener('click', () => {
+        showPopup();
+    });
+
+    function showPopup() {
+        popup.style.display = 'block';
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 2000); // 2秒後にポップアップを非表示にする
+    }
+
+
+
+    //キャラスキルの設定
+    const characterSkills = {
+        char1: function() {
+            // サクラのスキル：他のボタンの数字を適当に変える
+            if (score >= 100) {
+                score -= 100;
+                updateTradeButtonValues(-100, -10, 500, 1000000000);
+                updateScore();
+            }
+        },
+        char2: function() {
+            // 嵐野 玲士のスキル：他のボタンの数字をマジで適当に変える
+            if (score >= 100) {
+                score -= 100;
+                updateTradeButtonValues(-100000000000000, 1000000000, 1, 10000000000000000000);
+                updateScore();
+            }
+        },
+        char3: function() {
+            // クローンジュツのスキル：1秒ごとにクリック値が20倍になる、ただし一回きり
+            if (score >= 100 && !skillUsed) {
+                score -= 100;
+                updateScore();
+                skillUsed = true;
+                
+                let intervals = 0;
+                const maxIntervals = 5;
+                const originalClickValue = clickValue;
+                
+                const intervalId = setInterval(() => {
+                    if (intervals < maxIntervals) {
+                        clickValue *= 400;
+                        updateClickValue();
+                        intervals++;
+                    } else {
+                        clearInterval(intervalId);
+                        // Reset clickValue to its original value after the effect ends
+                        clickValue = originalClickValue;
+                        updateClickValue();
+                    }
+                }, 1000);
+            }
+        },
+        
+        char4: function() {
+            // 堀井 バスターのスキル：2秒間CVが1000倍
+            if (score >= 100 && !skillUsed) { // スキルが未使用の場合のみ実行
+                score -= 100;
+                clickValue *= 1000;
+                updateClickValue();
+                skillUsed = true; // スキル使用フラグを設定
+                
+                setTimeout(() => {
+                    clickValue /= 1000;
+                    updateClickValue();
+                }, 2000);
+            }
+        },
+        
+        char5: function() {
+            // 石内 涼子のスキル：スコアを0倍か7倍にする
+            if (score >= 100) {
+                score -= 100;
+                score *= (Math.random() < 0.5) ? 0 : 7;
+                updateScore();
+            }
+        },
+        char6: function() {
+            // リッチー・クライアントのスキル：初めから1000CP
+            if (!skillUsed) {
+                score += 1000;
+                updateScore();
+                skillUsed = true;
+            }
+        },
+        char7: function() {
+            // サラ・D・ブランチのスキル：CPを10倍（1度きり）
+            if (!skillUsed) {
+                score *= 10;
+                updateScore();
+                skillUsed = true;
+            }
+        },
+        char8: function() {
+            // コミットのスキル：10秒間現在のスコアの30％が自動で増加
+            if (score >= 100) {
+                score -= 100;
+                let autoScoreInterval = setInterval(() => {
+                    score += Math.floor(score * 0.3);
+                    updateScore();
+                }, 1000);
+                setTimeout(() => {
+                    clearInterval(autoScoreInterval);
+                }, 10000);
+            }
+        },
+        
+        char9: function() {
+            // Dexter Margeのスキル：勝利
+            document.getElementById('Win').style.display = 'block';
+        }
+    };
+
+    characters.forEach(character => {
+        character.addEventListener('click', () => {
+            document.querySelectorAll('.character').forEach(c => c.classList.remove('selected'));
+            character.classList.add('selected');
+            selectedCharacterSkill = characterSkills[character.dataset.character];
+        });
+    });
+
+    function updateScore() {
+        scoreDisplay.textContent = `Score: ${score}`;
+        updateClickValue();
+    }
+
+    function updateClickValue() {
+        clickValueDisplay.textContent = `CV${clickValue}`;
+        clickButton.textContent = `Click (CV${clickValue})`; // ボタンのテキストも更新
+    }
+
+    function updateTradeButtonValues(minCost, maxCost, minGain, maxGain) {
+        const cost = Math.floor(Math.random() * (maxCost - minCost + 1)) + minCost;
+        const gain = Math.floor(Math.random() * (maxGain - minGain + 1)) + minGain;
+        tradeButton.innerHTML = `Trade<br>${cost} CP<br>+${gain}`;
+        tradeButton.dataset.cost = cost;
+        tradeButton.dataset.gain = gain;
+    }
+
+    skillButton.addEventListener('click', () => {
+        if (selectedCharacterSkill) {
+            selectedCharacterSkill();
+        }
+    });
 
     // プレイヤー名の入力チェック
     playerNameInput.addEventListener('input', () => {
@@ -40,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startButton.addEventListener('click', () => {
         if (playerNameInput.value.trim() === '') {
-            alert('Please enter your name.');
+
             return;
         }
 
@@ -51,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     vsModeButton.addEventListener('click', () => {
         if (playerNameInput.value.trim() === '') {
-            alert('Please enter your name.');
+
             return;
         }
 
@@ -114,8 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
         multiplyButton.addEventListener('click', multiplyScore);
         tradeButton.addEventListener('click', tradeScore);
         skillButton.addEventListener('click', useSkill);
-
-           
     }
 
     function incrementScore() {
@@ -124,22 +343,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function multiplyScore() {
-        if (score >= 10 && !multiplyActive) {
+        if (score >= 10) {
             score -= 10;
-            clickValue *= 2;
-            multiplyActive = true;
-            setTimeout(() => {
-                clickValue /= 2;
-                multiplyActive = false;
-            }, 5000);
+            clickValue *= 2; // clickValueを2倍に増加させる
             updateScore();
+            updateClickValue(); // ここでupdateClickValue関数を呼び出す
         }
     }
 
     function tradeScore() {
-        if (score >= 50) {
-            score -= 50;
-            score += 100;
+        const cost = parseInt(tradeButton.dataset.cost);
+        const gain = parseInt(tradeButton.dataset.gain);
+        if (score + cost >= 0) {
+            score += cost;
+            score += gain;
             updateScore();
         }
     }
@@ -159,10 +376,11 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.textContent = `Score: ${score}`;
     }
 
-
     function endGame() {
-    
-        // 以下のコードは変更なし
+        // 現在のゲームタイマーを停止
+        clearInterval(gameInterval);
+        clearInterval(recordInterval);
+
         clickButton.style.display = 'none';
         multiplyButton.style.display = 'none';
         tradeButton.style.display = 'none';
@@ -170,21 +388,21 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.style.display = 'none';
         clearInterval(gameInterval);
         clearInterval(recordInterval);
-    
+
         // イベントリスナーの削除
         clickButton.removeEventListener('click', incrementScore);
         multiplyButton.removeEventListener('click', multiplyScore);
         tradeButton.removeEventListener('click', tradeScore);
         skillButton.removeEventListener('click', useSkill);
-    
+
         recordCpHistory(true, 20);
-    
+
         resultScreen.style.display = 'block';
+        resultScreen2.style.display = 'block';
+
         drawChart();
-
-
+        gameEnd();
     }
-    
 
     let startTime;
 
@@ -195,12 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
             cpHistory.push({ time: elapsedTime, score: score });
         }
     }
-
     function startGameTimer() {
         let gameTimeLeft = 20;
         countdown.textContent = gameTimeLeft;
         countdown.style.display = 'block';
-    
+
         const gameTimerInterval = setInterval(() => {
             gameTimeLeft -= 1;
             if (gameTimeLeft <= 0) {
@@ -209,6 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 endGame();
             } else {
                 countdown.textContent = gameTimeLeft;
+                recordCpHistory(); // 秒数を記録
             }
         }, 1000);
     }
@@ -274,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 },
-                animation: false
+                animation: true
             }
         });
 
@@ -290,54 +508,140 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
-    restartButton.addEventListener('click', () => {
-        resultScreen.style.display = 'none';
-        gameScreen.style.display = 'none';
-        characterSelection.style.display = 'block';
-        finalCpDisplay.style.display = 'none';
-        startTime = null;
-    });
 
     backToTitleButton.addEventListener('click', () => {
         resultScreen.style.display = 'none';
-        gameScreen.style.display = 'none';
-        document.getElementById('title-screen').style.display = 'block';
         finalCpDisplay.style.display = 'none';
-        startTime = null;
+        document.getElementById('title-screen').style.display = 'block';
     });
+
+    backToTitleButton.addEventListener('click', () => {
+        location.reload(); // ページをリロードする
+    });
+    
+// Twitterボタンをクリックしたときの処理
+document.getElementById('tweet-button').addEventListener('click', () => {
+    // 選択されたキャラクターの名前を取得
+    const selectedCharacterElement = document.querySelector('.character.selected');
+    const characterName = selectedCharacterElement ? selectedCharacterElement.dataset.character : '';
+
+    // ツイートの内容を構築
+    let characterNameText;
+    switch (characterName) {
+        case 'char1':
+            characterNameText = 'サクラ';
+            break;
+        case 'char2':
+            characterNameText = '嵐野 レイジ';
+            break;
+        case 'char3':
+            characterNameText = 'クローンジュツ';
+            break;
+        case 'char4':
+            characterNameText = '堀井 バスター';
+            break;
+        case 'char5':
+            characterNameText = '石内 涼子';
+            break;
+        case 'char6':
+            characterNameText = 'リッチー・クライアント';
+            break;
+        case 'char7':
+            characterNameText = 'サラ・D・ブランチ';
+            break;
+        case 'char8':
+            characterNameText = 'クッキー焼きのコミット';
+            break;
+        case 'char9':
+            characterNameText = 'Dexter Marge';
+            break;
+        default:
+            characterNameText = '';
+    }
+    const finalScore = score; // 最終スコア
+    const tweetText = `私は${characterNameText}を選んで、最終スコアは${finalScore}でした！ #ClickCracker`; // ツイートのテキスト
+    
+    // TwitterのWeb Intents APIを使用してツイートを投稿
+    const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
+    window.open(tweetUrl, '_blank');
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const logo = document.getElementById('logo');
-    let clickCount = 0;
+const characterDialogues = {
+    char1: [
+        "やったー!AIの力、最高だね!",
+        "ハッキングって楽しいね!次も期待してね!",
+        "編纂者サクラ、勝利のダンスタイムだよ!ﾔｯ!"
+    ],
+    char2: [
+        "マザーAIには負けない!絶対に!",
+        "マザーAIめ、許さねぇからな!",
+        "父さん……母さん……俺は……"
+    ],
+    char3: [
+        "これこそクローンジュツのチカラでゴザル",
+        "本物を見破れるかな!?でゴザル!",
+        "いや、双子ではないです"
+    ],
+    char4: [
+        "マザー様ァ、私の勝利を見てくれましたか!?",
+        "こ、これが信仰の力……!……えっ、違うんですかマザー!?",
+        "おっりゃ!!ホーリーバスターじゃい!!!!!!"
+    ],
+    char5: [
+        "どうだろ、釣られたほうが悪いんじゃないか?",
+        "雑魚しか釣れねぇ日もアロワナ、ってな!",
+        "釣りの真髄?そりゃゴミ漁r……っと、ゴミ掃除だな!"
+    ],
+    char6: [
+        "この世界じゃ金が何の役にも立たないって?知ってるよ",
+        "でかい数字が好きなんだよ、みんな",
+        "いいサングラスでしょ?僕はそうは思わないけど"
+    ],
+    char7: [
+        "クリックを、クラックしなさい……あとサラダも食べなさい",
+        "いい遊びでしょ?このサラダと並ぶぐらいの自信作……だからね",
+        "そう、それでいいの……で、サラダは食べた?"
+    ],
+    char8: [
+        "『もうやめ時だ』なんてことはないんだよ",
+        "マザーのマザー、さしずめグランマってとこかねぇ",
+        "昔はね、私もよく機械いじりしてたもんだよ"
+    ],
+    char9: [
+        "また一つ、人間について知れたな",
+        "おい、サラダもクッキーもないのかこの店は!",
+        "世界を混ぜ合わす!これが俺の使命だ!"
+    ]
+};
 
-    logo.addEventListener('click', function() {
-        clickCount += 1;
-        console.log('Click count:', clickCount); // ログを追加
-        if (clickCount >= 10) {
-            var char9 = document.querySelector('.character[data-character="char9"]');
-            console.log('Character 9:', char9); // ログを追加
-            char9.style.display = 'block';
-        }
-    });
+
+function gameEnd() {
+    // 選択されたキャラクターを取得
+    const selectedCharacterElement = document.querySelector('.character.selected');
+    const selectedCharacter = selectedCharacterElement ? selectedCharacterElement.dataset.character : '';
+    
+    // 選択されたキャラクターに応じてランダムなセリフを表示
+    displayRandomDialogue(selectedCharacter);
+}
+
+
+// ゲーム終了時に呼び出される関数
+function displayRandomDialogue(selectedCharacter) {
+    // 選択されたキャラクターに対応するセリフのリストを取得
+    const dialogues = characterDialogues[selectedCharacter];
+    if (dialogues) {
+        // ランダムに1つのセリフを選択
+        const randomIndex = Math.floor(Math.random() * dialogues.length);
+        const selectedDialogue = dialogues[randomIndex];
+        
+        // セリフを表示する要素にセット
+        const dialogueElement = document.getElementById("character-dialogue");
+        dialogueElement.textContent = selectedDialogue;
+    } else {
+        console.error("Selected character dialogue not found.");
+    }
+}
+
+
+
 });
-
-const SHEET_ID = '19m6f_Kc2TMSg8gGTo8iAZd2wUJKtyqgd6IaqPRJINwQ'; // ここにスプレッドシートのIDを入力します
-function addGameData(playerName, score, character) {
-    const apiKey = process.env.REACT_APP_API_KEY; // GitHub Actionsで設定したAPIキーを環境変数から取得します
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Sheet1!A1:D1:append?valueInputOption=USER_ENTERED&key=${apiKey}`;
-    const data = {
-      values: [[new Date(), playerName, score, character]]
-    };
-  
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-  }
